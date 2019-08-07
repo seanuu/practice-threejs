@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body></body>
+
+<script>
+    let vertexShader = `
+    attribute vec3 pointColor;
+    attribute float size;
+    varying vec3 vColor;
+    void main() {
+        vColor = pointColor;
+        gl_PointSize = size;
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+    }
+`;
+
+    let fragmentShader = `
+    uniform vec3 color;
+    uniform sampler2D texture;
+    varying vec3 vColor;
+    void main() {
+        gl_FragColor = vec4(color * vColor, 1.0) * texture2D(texture, gl_PointCoord * vec2(1.0, -1.0));
+    }
+`;
+
+    let scene, camera, renderer, stats;
+    let sphere, sphereLength;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    init();
+    initSphere();
+    animate();
+
+    function init() {
+        // scene
+        scene = new THREE.Scene();
+
+        // camera
+        // camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+        camera = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 1, 100000);
+        camera.position.z = 1200;
+
+        // renderer
+        renderer = new THREE.WebGLRenderer();
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(width, height);
+        renderer.setClearColor(0x000000);
+        document.body.appendChild(renderer.domElement);
+
+        // stats
+        stats = new Stats();
+        document.body.appendChild(stats.domElement);
+
+        window.addEventListener('resize', () => {
+            windowResize();
+        })
+    }
+
+    function windowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+
+    function initSphere() {
+        // BufferGeometry
+        // Texture
+        // ShaderMaterial
+
+        let radius = 320;
+        let widthSegments = 70;
+        let heightSegments = 35;
+
+        let vertices1 = new THREE.SphereGeometry(radius, widthSegments, heightSegments).vertices;
+        let vertices2 = new THREE.IcosahedronGeometry(0.3 * radius, 3).vertices;
+        // let vertices2 = new THREE.BoxGeometry(0.5 * radius, 0.5 * radius, 0.5 * radius, 10, 10, 10).vertices;
+
+        let vertices = vertices1.concat(vertices2);
+
+        sphereLength = vertices1.length;
+        let length = vertices.length;
+
+        // attributes
+        let positions = new Float32Array(vertices.length * 3);
+        let colors = new Float32Array(vertices.length * 3);
+        let sizes = new Float32Array(vertices.length);
+
+        // fill attributes
+        let vertex;
+        let color = new THREE.Color();
+
+        for (let i = 0; i < vertices.length; i++) {
+            // position
+            vertex = vertices[i];
+            vertex.toArray(positions, i * 3);
+
+            // color
+            if (i < sphereLength) {
+                color.setHSL((i / sphereLength), 1, 0.1 + (vertex.y + radius) / (4 * radius));
+            } else {
+                color.setHSL(0.01, 1, 0.1 + (vertex.y + radius) / (4 * radius));
+            }
+            color.toArray(colors, i * 3);
+
+            // size
+            sizes[i] = i < sphereLength ? 10.0 : 15.0;
+        }
+
+        let geometry = new THREE.BufferGeometry();
+        geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.addAttribute('pointColor', new THREE.BufferAttribute(colors, 3));
+        geometry.addAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        // texture
+        let texture = new THREE.TextureLoader().load('../libs/examples/textures/sprites/disc.png');
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        // shaderMaterial
+        let material = new THREE.ShaderMaterial({
+            uniforms: {
+                color: {value: new THREE.Color(0xffffff)},
+                texture: {value: texture}
+            },
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            transparent: true
+        });
+
+        // sphere
+        sphere = new THREE.Points(geometry, material);
+        scene.add(sphere);
+    }
+
+    function updateSphere() {
+        // Model View Projection matrix
+        // modelMatrix(object.matrixWorld)
+        // modelViewMatrix(camera.matrixWorldInverse * object.matrixWorld)
+        // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+
+        // 更新 geometry.index 信息
+        let vector = new THREE.Vector3();
+        let matrix = new THREE.Matrix4();
+        matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+        matrix.multiply(sphere.matrixWorld);
+
+        let geometry = sphere.geometry;
+        // 获取顶点索引、顶点坐标，顶点坐标排序深度后更新顶点索引
+        let index = geometry.getIndex();
+        let positions = geometry.getAttribute('position').array;
+        let length = positions.length / 3;
+
+        if (!index) {
+            let array = new Uint16Array(length);
+            for (let i = 0; i < length; i++) {
+                array[i] = i;
+            }
+            index = new THREE.BufferAttribute(array, 1);
+            geometry.setIndex(index);
+        }
+
+        // 缓存深度和索引信息
+        // 顶点进行矩阵变换后的深度信息排序
+        let sortArray = [];
+        for (let i = 0; i < length; i++) {
+            vector.fromArray(positions, i * 3);
+            vector.applyMatrix4(matrix);
+
+            sortArray.push([vector.z, i]);
+        }
+
+        sortArray.sort((a, b) => {
+            return b[0] - a[0];
+        });
+
+        let indices = index.array;
+
+        for (let i = 0; i < length; i++) {
+            indices[i] = sortArray[i][1];
+        }
+
+        geometry.index.needsUpdate = true;
+    }
+
+
+    function animate() {
+        requestAnimationFrame(animate);
+        updateSphere();
+        render();
+        stats.update();
+    }
+
+    function render() {
+        let time = Date.now() * 0.005;
+
+        sphere.rotation.y = 0.03 * time;
+        sphere.rotation.z = 0.03 * time;
+
+        let geometry = sphere.geometry;
+        let attributes = geometry.attributes;
+        let length = attributes.size.array.length;
+
+        // set attributes.size
+        for (let i = 0; i < length; i++) {
+            if (i < sphereLength / 2) {
+                attributes.size.array[i] = (20 + 15 * Math.sin(0.1 * i + time)) * (0.25 + 1.25 * i / sphereLength);
+            } else if (i < sphereLength) {
+                attributes.size.array[i] = (20 + 15 * Math.sin(0.1 * i + time)) * (0.25 + 1.25 * Math.abs(i - sphereLength) / sphereLength);
+            } else {
+                attributes.size.array[i] = (25 * (1 - Math.abs(((0.1 * i + time * 10) % 50) / 50 - .5) * 2));
+            }
+        }
+
+        let color = new THREE.Color();
+        for (let i = 0; i < length; i++) {
+            if (i < sphereLength) {
+                color.setHSL((1 - Math.abs(((0.1 * i + time * 10) % 800) / 800 - .5) * 2), 1, 0.5);
+                color.toArray(attributes.pointColor.array, i * 3);
+            } else {
+                color.setHSL(1 - Math.abs((time % 100) / 100 - .5) * 2, 1, 0.5);
+                color.toArray(attributes.pointColor.array, i * 3);
+            }
+        }
+
+        attributes.size.needsUpdate = true;
+        attributes.pointColor.needsUpdate = true;
+
+        updateSphere();
+
+        renderer.render(scene, camera);
+    }
+
+</script>
+</html>

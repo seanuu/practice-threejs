@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+</head>
+<body></body>
+
+<script>
+    let width = window.innerWidth, height = window.innerHeight;
+    let renderer, scene, camera, stats;
+    let box, sphere, mergedObject;
+    let theta = 0;
+
+    // renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000);
+    document.body.appendChild(renderer.domElement);
+
+    // scene
+    scene = new THREE.Scene();
+
+    // camera
+    camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 1e5);
+    camera.position.z = 200;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    // box
+    box = generateBox();
+    box.position.set(50, -60, 0);
+    scene.add(box);
+
+    // sphere
+    sphere = generateSphere();
+    sphere.position.set(-50, -60, 0);
+    scene.add(sphere);
+
+    // mergedObject
+    let geometry = new THREE.Geometry();
+    geometry.mergeMesh(box);
+    geometry.mergeMesh(sphere);
+
+    let material = new THREE.MeshNormalMaterial({wireframe: true});
+    mergedObject = new THREE.Mesh(geometry, material);
+    mergedObject.position.set(0, 120, 0);
+    scene.add(mergedObject);
+
+
+    animate();
+
+    function render() {
+        mergedObject.geometry.rotateY(0.005);
+
+        renderer.render(scene, camera);
+    }
+
+    function animate() {
+        stats.update();
+        requestAnimationFrame(animate);
+        render();
+    }
+
+    function generateBox() {
+        let size = 50;
+        let segment = 10;
+
+        let material = new THREE.MeshNormalMaterial({wireframe: true});
+        let geometry = new THREE.BoxGeometry(size, size, size, segment, segment, segment);
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+    function generateSphere() {
+        let radius = 30;
+        let segment = 10;
+
+        let material = new THREE.MeshNormalMaterial({wireframe: true});
+        let geometry = new THREE.SphereGeometry(radius, segment, segment);
+
+        return new THREE.Mesh(geometry, material);
+    }
+
+</script>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/loaders/SVGLoader.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+    <script src="../libs/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body></body>
+
+<script>
+    let width = window.innerWidth, height = window.innerHeight;
+    let renderer, scene, camera, stats, controls, light;
+    let path = '../libs/examples';
+
+    // renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.clearColor(0x000000);
+    document.body.appendChild(renderer.domElement);
+
+    // scene
+    scene = new THREE.Scene();
+
+    // camera
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 0, 8);
+
+    // light
+    light = new THREE.HemisphereLight(0xbbbbff, 0x444422);
+    light.position.set(0, 1, 0);
+    scene.add(light);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    let envMap = initEnvMap();
+    loadModel(envMap);
+
+    animate();
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function initEnvMap() {
+        let path = '../libs/examples/textures/cube/Bridge2/';
+        let format = '.jpg';
+        let envMap = new THREE.CubeTextureLoader().load([
+            path + 'posx' + format, path + 'negx' + format,
+            path + 'posy' + format, path + 'negy' + format,
+            path + 'posz' + format, path + 'negz' + format
+        ]);
+        scene.background = envMap;
+
+        return envMap;
+    }
+
+    function loadModel(envMap) {
+        let loader = new THREE.GLTFLoader();
+
+        loader.load(`../libs/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf`, function (gltf) {
+            gltf.scene.traverse(function (child) {
+                if (child.isMesh) {
+                    child.material.envMap = envMap;
+                }
+            });
+            scene.add(gltf.scene);
+        });
+    }
+
+
+</script>
+</html>

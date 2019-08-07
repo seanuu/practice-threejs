@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body></body>
+
+<script>
+    let width = window.innerWidth, height = window.innerHeight;
+    let renderer, scene, camera, stats, controls;
+    let pointLight, ambientLight;
+
+    // renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.clearColor(0x000000);
+    document.body.appendChild(renderer.domElement);
+
+    // scene
+    scene = new THREE.Scene();
+
+    // camera
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 0, 200);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // ambientLight
+    ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
+
+    pointLight = new THREE.PointLight(0x909090);
+    pointLight.position.set(200, 200, 600);
+    scene.add(pointLight);
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    createGlowingEarth(60);
+    animate();
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function createGlowingEarth(radius) {
+        let loader = new THREE.TextureLoader();
+        let group = new THREE.Group();
+
+        // earth
+        let surfaceMap = loader.load("../assets/earth_surface_2048.jpg");
+        let normalMap = loader.load("../assets/earth_normal_2048.jpg");
+        let specularMap = loader.load("../assets/earth_specular_2048.jpg");
+
+        let geometry = new THREE.SphereBufferGeometry(radius, 128, 128);
+        let material = new THREE.MeshPhongMaterial({
+            specular: 0x333333,
+            shininess: 12,
+            map: surfaceMap,
+            normalMap: normalMap,
+            specularMap: specularMap
+        });
+
+        let earth = new THREE.Mesh(geometry, material);
+        group.add(earth);
+
+        // cloud
+        let cloudMap = loader.load('../assets/earth_clouds_1024.png');
+        let cloudGeometry = new THREE.SphereBufferGeometry(radius + radius / 20, 128, 128);
+        let cloud = new THREE.Mesh(cloudGeometry, new THREE.MeshLambertMaterial({
+            color: 0xffffff, map: cloudMap, transparent: true
+        }));
+
+        group.add(cloud);
+        group.add(createGlow(radius, 128, 128));
+
+        scene.add(group);
+    }
+
+    function createGlow(radius, widthSegments, heightSegments) {
+        let vertexShader = `
+            varying vec3 v_Normal;
+            varying vec3 v_Position;
+            varying float zDepth;
+
+            void main() {
+                v_Normal = normalize(normalMatrix * normal);
+                v_Position = (modelMatrix * vec4(position, 1.0)).xyz;
+                vec4 myPosition = modelViewMatrix * vec4(position, 1.0);
+
+                gl_Position = projectionMatrix * myPosition;
+            }`;
+
+        let fragmentShader = `
+            uniform vec3 u_GlowColor;
+            uniform float u_Radius;
+            uniform float u_InnerRadius;
+
+            varying vec3 v_Normal;
+            varying vec3 v_Position;
+
+            float expOut(float t) {
+                return 1.0 - pow(2.0, - 10.0 * t);
+            }
+
+            float expIn(float t) {
+                return pow(2.0, 10.0 * t - 10.0);
+            }
+
+            float linearMap(float domain0, float domain1, float range0, float range1, float value) {
+                return ((value - domain0) / (domain1 - domain0)) * (range1 - range0) + range0;
+            }
+
+            void main() {
+                vec3 worldPositionToCamera = cameraPosition - v_Position;
+                vec3 viewPositionToCamera = normalize((viewMatrix * vec4(worldPositionToCamera, 0.0)).xyz);
+
+                float intensity = dot(viewPositionToCamera, v_Normal);
+                float r = sin(acos(intensity)) * u_Radius;
+
+                float borderWidth = u_InnerRadius / 500.0;
+
+                if (r > u_InnerRadius) {
+                    float t = linearMap(u_InnerRadius, u_Radius, 1.0, 0.0, r);
+                    intensity = pow(t, 2.0);
+                } else if (r > (u_InnerRadius - borderWidth) && r < u_InnerRadius) {
+                    intensity = 1.0;
+                } else if (r <= (u_InnerRadius - borderWidth) && r > u_InnerRadius / 2.0) {
+                    float t = linearMap(u_InnerRadius / 2.0, (u_InnerRadius - borderWidth), 0.0, 1.0, r);
+                    intensity = expIn(t);
+                } else {
+                    intensity = 0.0;
+                }
+
+                float depth = (gl_FragCoord.z / gl_FragCoord.w);
+
+               if (depth > 2000.0 || depth < 0.0) {
+                    intensity = 0.0;
+               } else {
+                    intensity = intensity * linearMap(0.0, 1000.0, 1.0, 0.0, depth);
+               }
+
+                gl_FragColor = vec4(u_GlowColor, intensity);
+            }`;
+
+        let geometry = new THREE.SphereBufferGeometry(radius + radius / 20, widthSegments, heightSegments);
+        let material = new THREE.ShaderMaterial({
+            uniforms: {
+                u_GlowColor: {value: new THREE.Color(0xffffff)},
+                u_Radius: {value: radius + radius / 20},
+                u_InnerRadius: {value: radius},
+            },
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            transparent: true
+        });
+
+        return new THREE.Mesh(geometry, material)
+    }
+
+</script>
+</html>

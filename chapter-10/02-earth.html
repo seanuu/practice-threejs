@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body></body>
+
+<script>
+    let width = window.innerWidth, height = window.innerHeight;
+    let renderer, scene, camera, stats, controls, light, earth, cloud;
+
+    // renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.clearColor(0x000000);
+    document.body.appendChild(renderer.domElement);
+
+    // scene
+    scene = new THREE.Scene();
+
+    // camera
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 0, 200);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // light
+    light = new THREE.AmbientLight(0x404040);
+    scene.add(light);
+
+    let directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    directionalLight.position.set(-1, 0, 0);
+    scene.add(directionalLight);
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    createEarth();
+    animate();
+
+    function render() {
+        earth.rotateY(0.001);
+        cloud.rotateY(0.0008);
+        cloud.rotateX(0.0001);
+
+        renderer.render(scene, camera);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function createEarth() {
+        let loader = new THREE.TextureLoader();
+        let group = new THREE.Group();
+
+        // earth
+        let surfaceMap = loader.load("../assets/earth_surface_2048.jpg");
+        let normalMap = loader.load("../assets/earth_normal_2048.jpg");
+        let specularMap = loader.load("../assets/earth_specular_2048.jpg");
+
+        let geometry = new THREE.SphereBufferGeometry(50, 128, 128);
+        let material = new THREE.MeshPhongMaterial({
+            specular: 0x333333,
+            shininess: 12,
+            map: surfaceMap,
+            normalMap: normalMap,
+            specularMap: specularMap
+        });
+
+        earth = new THREE.Mesh(geometry, material);
+        group.add(earth);
+
+        // cloud
+        let cloudMap = loader.load('../assets/earth_clouds_1024.png');
+        let cloudGeometry = new THREE.SphereBufferGeometry(51, 128, 128);
+        cloud = new THREE.Mesh(cloudGeometry, new THREE.MeshLambertMaterial({
+            color: 0xffffff, map: cloudMap, transparent: true
+        }));
+
+        group.add(cloud);
+
+        scene.add(group);
+    }
+</script>
+</html>

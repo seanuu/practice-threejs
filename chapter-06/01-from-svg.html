@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/loaders/SVGLoader.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body></body>
+
+<script>
+    let width = window.innerWidth, height = window.innerHeight;
+    let renderer, scene, camera, stats, controls;
+
+    // renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    document.body.appendChild(renderer.domElement);
+
+    // scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xb0b0b0);
+
+    // camera
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+    camera.position.set(0, 0, 200);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    let helper = new THREE.GridHelper(160, 10);
+    helper.rotation.x = Math.PI / 2;
+    scene.add(helper);
+
+    loadSvg();
+
+    animate();
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function loadSvg() {
+        let loader = new THREE.SVGLoader();
+
+        loader.load('../assets/tiger.svg', function (paths) {
+
+            let group = new THREE.Group();
+            group.scale.multiplyScalar(0.1);
+            group.scale.y *= -1;
+
+            for (let i = 0; i < paths.length; i++) {
+                let path = paths[i];
+
+                let material = new THREE.MeshBasicMaterial({
+                    color: path.color,
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                });
+
+                let shapes = path.toShapes(true);
+
+                for (let j = 0; j < shapes.length; j++) {
+                    let shape = shapes[j];
+                    let geometry = new THREE.ShapeBufferGeometry(shape);
+                    let mesh = new THREE.Mesh(geometry, material);
+
+                    group.add(mesh);
+                }
+
+            }
+
+            scene.add(group);
+
+        });
+    }
+</script>
+</html>

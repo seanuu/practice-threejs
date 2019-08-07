@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2496e3df-dcb0-481a-99c6-5bf22ecb1cb9" name="Default Changelist" comment="" />
+    <ignored path="$PROJECT_DIR$/.tmp/" />
+    <ignored path="$PROJECT_DIR$/temp/" />
+    <ignored path="$PROJECT_DIR$/tmp/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>MeshNormalMaterial</find>
+      <find>stats</find>
+      <find>SVGLoader</find>
+      <find>appendChild</find>
+      <find>back</find>
+      <find>vUv</find>
+      <find>temp</find>
+      <find>time</find>
+      <find>p</find>
+      <find>clamp</find>
+      <find>earth_specular</find>
+      <find>MeshStandardMaterial</find>
+      <find>SphereBufferGeometry</find>
+      <find>u_GlowColor</find>
+      <find>cameraPosition</find>
+      <find>u_Radius</find>
+      <find>material</find>
+      <find>expIn</find>
+      <find>viewPositionToCamera</find>
+      <find>dat</find>
+      <find>WebGLRenderer</find>
+      <find>width</find>
+      <find>render</find>
+      <find>Lensflare</find>
+      <find>LensFlareElement</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/chapter-08/01-objects-combine.html" />
+        <option value="$PROJECT_DIR$/chapter-06/01-threeBSP.html" />
+        <option value="$PROJECT_DIR$/chapter-08/01-combine-object.html" />
+        <option value="$PROJECT_DIR$/assets/icon.svg" />
+        <option value="$PROJECT_DIR$/libs/examples/01-from-1svg.html" />
+        <option value="$PROJECT_DIR$/chapter-06/01-from-1svg.html" />
+        <option value="$PROJECT_DIR$/libs/examples/aaa.html" />
+        <option value="$PROJECT_DIR$/chapter-06/01-from-svg.html" />
+        <option value="$PROJECT_DIR$/chapter-06/02-extrude-geometry.html" />
+        <option value="$PROJECT_DIR$/chapter-08/02-obj-loader.html" />
+        <option value="$PROJECT_DIR$/chapter-08/tst.js" />
+        <option value="$PROJECT_DIR$/chapter-08/02-loader-gltf.html" />
+        <option value="$PROJECT_DIR$/chapter-09/01-morphtargets_horse.html" />
+        <option value="$PROJECT_DIR$/chapter-09/02-morphtargets-cube.html" />
+        <option value="$PROJECT_DIR$/chapter-10/01-lava.html" />
+        <option value="$PROJECT_DIR$/chapter-10/01-lava-texture.html" />
+        <option value="$PROJECT_DIR$/chapter-10/02-earth.html" />
+        <option value="$PROJECT_DIR$/chapter-06/03-text.html" />
+        <option value="$PROJECT_DIR$/test.js" />
+        <option value="$PROJECT_DIR$/others/01-.html" />
+        <option value="$PROJECT_DIR$/chapter-12/01-glowing.html" />
+        <option value="$PROJECT_DIR$/_attribute_points/index.html" />
+        <option value="$PROJECT_DIR$/others/02-points.html" />
+        <option value="$PROJECT_DIR$/others/03-lenflare.html" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="953" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="learning-threejs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="learning-threejs" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\learning-threejs\others" />
+      <recent name="G:\learning-threejs\assets" />
+      <recent name="G:\learning-threejs\chapter-06" />
+      <recent name="G:\learning-threejs" />
+      <recent name="G:\learning-threejs\libs\examples" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\learning-threejs\libs" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Node.js.test.js">
+    <configuration name="test.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="test.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <configuration name="tst.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="tst.js" working-dir="$PROJECT_DIR$/chapter-08">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.test.js" />
+        <item itemvalue="Node.js.tst.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2496e3df-dcb0-481a-99c6-5bf22ecb1cb9" name="Default Changelist" comment="" />
+      <created>1561633964569</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1561633964569</updated>
+      <workItem from="1561633965724" duration="7065000" />
+      <workItem from="1561641053262" duration="636000" />
+      <workItem from="1561686771834" duration="9488000" />
+      <workItem from="1562039097052" duration="9075000" />
+      <workItem from="1562056147825" duration="1169000" />
+      <workItem from="1562134435890" duration="19783000" />
+      <workItem from="1562915147894" duration="988000" />
+      <workItem from="1565194661378" duration="2378000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="50582000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11433087" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32936078" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/libs/examples/js/vr/WebVR.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/three.min.js" />
+    <entry file="file://$PROJECT_DIR$/chapter-06/01-threeBSP.html" />
+    <entry file="file://$PROJECT_DIR$/libs/examples/js/loaders/SVGLoader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/icon.svg" />
+    <entry file="file://$PROJECT_DIR$/libs/examples/01-from-1svg.html" />
+    <entry file="file://$PROJECT_DIR$/chapter-06/01-from-1svg.html" />
+    <entry file="file://$PROJECT_DIR$/libs/examples/aaa.html" />
+    <entry file="file://$PROJECT_DIR$/chapter-08/tst.js" />
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/negy.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/negz.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/posx.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/posy.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/posz.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/readme.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/textures/cube/Bridge2/negx.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/models/gltf/OutlinedBox/screenshot.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-09/02-morphtargets-cube.html" />
+    <entry file="file://$PROJECT_DIR$/chapter-08/01-combine-object.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="77" lean-forward="true" selection-start-line="77" selection-end-line="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-08/02-loader-gltf.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="77" column="34" selection-start-line="77" selection-start-column="34" selection-end-line="77" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-09/01-morphtargets_horse.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="843">
+          <caret line="69" column="24" selection-end-line="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/earth_clouds_1024.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/earth_surface_2048.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="47275" column="4" selection-start-line="47275" selection-start-column="4" selection-end-line="47275" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-06/02-extrude-geometry.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="72" column="71" lean-forward="true" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-06/03-text.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-72">
+          <caret line="36" column="35" lean-forward="true" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/build/three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="29552" column="72" selection-start-line="29552" selection-start-column="58" selection-end-line="29552" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.js" />
+    <entry file="file://$PROJECT_DIR$/chapter-10/01-lava-texture.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3720">
+          <caret line="124" column="58" selection-start-line="124" selection-start-column="58" selection-end-line="124" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-10/02-earth.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/01-.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-06/01-from-svg.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="54" selection-start-line="54" selection-end-line="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/chapter-12/01-glowing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-627">
+          <caret line="120" lean-forward="true" selection-start-line="120" selection-end-line="120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_attribute_points/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="226" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_attribute_points/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="18" column="12" lean-forward="true" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/libs/examples/js/objects/Lensflare.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="279" lean-forward="true" selection-start-line="279" selection-end-line="279" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/03-lenflare.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1107">
+          <caret line="19" column="7" lean-forward="true" selection-start-line="19" selection-start-column="7" selection-end-line="19" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/01-glowing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="29" column="34" lean-forward="true" selection-start-line="29" selection-start-column="34" selection-end-line="30" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/others/02-points.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="190" column="31" lean-forward="true" selection-start-line="190" selection-start-column="31" selection-end-line="190" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/tiger.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/logo.svg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+  </component>
+</project>
