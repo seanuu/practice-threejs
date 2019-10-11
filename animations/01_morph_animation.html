@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/libs/dat.gui.min.js"></script>
+    <script src="../libs/examples/js/libs/tween.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+    <script src="../libs/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body></body>
+
+<script>
+    let scene, camera, renderer, stats, gui;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let mixer, actions = [];
+    let previousAction, activeAction;
+
+    let path = '../libs/examples';
+    let clock = new THREE.Clock();
+
+    // gui
+    gui = new dat.GUI();
+
+    // renderer
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.gammaOutput = true;
+    renderer.gammaFactor = 2.2;
+    renderer.clearColor(0x000000);
+    document.body.appendChild(renderer.domElement);
+
+    // camera
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 100);
+    camera.position.set(-10, 6, 20);
+    camera.lookAt(new THREE.Vector3(0, 2, 0));
+
+    // scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xe0e0e0);
+    scene.fog = new THREE.Fog(0xe0e0e0, 20, 100);
+
+    let light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    light.position.set(0, 20, 0);
+    scene.add(light);
+
+    light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 20, 10);
+    scene.add(light);
+
+    let mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({
+        color: 0x999999,
+        depthWrite: false
+    }));
+    mesh.rotation.x = -Math.PI / 2;
+    scene.add(mesh);
+
+    let grid = new THREE.GridHelper(200, 40, 0x000000, 0x000000);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    loadModel();
+    animate();
+
+    function loadModel() {
+        let loader = new THREE.GLTFLoader();
+        loader.load("../libs/examples/models/gltf/RobotExpressive/RobotExpressive.glb", function (gltf) {
+            let model = gltf.scene;
+            let clips = gltf.animations;
+
+            // animationClip animationAction
+            scene.add(model);
+            mixer = new THREE.AnimationMixer(model);
+
+            for (let clip of clips) {
+                let action = mixer.clipAction(clip);
+                action.clampWhenFinished = true;
+                action.loop = THREE.LoopOnce;
+                actions.push(action);
+            }
+
+            activeAction = actions[0].play();
+
+            mixer.addEventListener('finished', () => {
+                setTimeout(() => {
+                    changeExpression();
+                    fadeToAction(Math.floor(Math.random() * actions.length), 0.5);
+                }, 500);
+            });
+
+            mixer.addEventListener('loop', () => {
+            });
+
+            // morph
+            let face = model.getObjectByName('Head_2');
+            let expressions = Object.keys(face.morphTargetDictionary);
+
+            let expressionFolder = gui.addFolder('Expressions');
+            for (let i = 0; i < expressions.length; i++) {
+                expressionFolder.add(face.morphTargetInfluences, i, 0, 1, 0.01).name(expressions[i]);
+            }
+            expressionFolder.open();
+
+            // morph animation
+            let expression = [[0, 1, 0], [0, 0, 1], [1, 0, 0]];
+
+            function changeExpression() {
+                new TWEEN.Tween(face.morphTargetInfluences)
+                    .to(expression[Math.floor(Math.random() * expression.length)], 200)
+                    .easing(TWEEN.Easing.Quadratic.Out)
+                    .start();
+            }
+        });
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        render();
+        stats.update();
+
+        TWEEN.update();
+    }
+
+    function render() {
+        if (mixer) mixer.update(clock.getDelta());
+        renderer.render(scene, camera);
+    }
+
+    function fadeToAction(name, duration) {
+        previousAction = activeAction;
+        activeAction = actions[name];
+        if (previousAction !== activeAction) {
+            previousAction.fadeOut(duration);
+        }
+        activeAction
+            .reset()
+            .setEffectiveTimeScale(1)
+            .setEffectiveWeight(1)
+            .fadeIn(duration)
+            .play();
+    }
+
+</script>
+</html>

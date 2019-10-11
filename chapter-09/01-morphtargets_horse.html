@@ -75,9 +75,10 @@
 
     function loadHorse() {
         let loader = new THREE.GLTFLoader();
-        loader.load("../libs/examples/models/gltf/Horse.glb", function (gltf) {
+        loader.load("../libs/examples/models/gltf/Parrot.glb", function (gltf) {
 
-            mesh = gltf.scene.children[0];
+            mesh = gltf.scene;
+
             scene.add(mesh);
 
             mixer = new THREE.AnimationMixer(mesh);
