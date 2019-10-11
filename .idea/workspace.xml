@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2496e3df-dcb0-481a-99c6-5bf22ecb1cb9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/animations/01_morph_animation.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/animations/02_blending.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chapter-09/01-morphtargets_horse.html" beforeDir="false" afterPath="$PROJECT_DIR$/chapter-09/01-morphtargets_horse.html" afterDir="false" />
-    </list>
+    <list default="true" id="2496e3df-dcb0-481a-99c6-5bf22ecb1cb9" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +92,7 @@
       <workItem from="1568619893634" duration="1360000" />
       <workItem from="1570605301070" duration="11760000" />
       <workItem from="1570707371940" duration="5474000" />
+      <workItem from="1570799446090" duration="285000" />
     </task>
     <servers />
   </component>
