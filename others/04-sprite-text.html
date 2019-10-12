@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/libs/dat.gui.min.js"></script>
+    <script src="../libs/examples/js/libs/tween.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body></body>
+
+<script>
+
+
+    class SpriteText {
+        constructor(text, materialSetting = {}) {
+            let canvas = document.createElement('canvas');
+            this.ctx = canvas.getContext('2d');
+
+            this.texture = new THREE.CanvasTexture(canvas);
+
+            let spriteMaterial = new THREE.SpriteMaterial(
+                Object.assign({
+                    map: this.texture,
+                    transparent: true,
+                    // sizeAttenuation: false
+                }, materialSetting)
+            );
+
+            this.mesh = new THREE.Sprite(spriteMaterial);
+
+            this.update(text);
+        }
+
+        update(text) {
+            let ctx = this.ctx;
+            let canvas = ctx.canvas;
+            let fontSize = 64;
+            let canvasWidth, scale;
+            let font = `100 ${fontSize}px Georgia`;
+            let power = 1, temp;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.height = fontSize;
+
+            ctx.font = font;
+            temp = ctx.measureText(text).width;
+
+            while ((temp = temp / 2) > 1) power++;
+            canvasWidth = canvas.width = Math.pow(2, power);
+
+            ctx.font = font;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#006699';
+            ctx.fillText(text, canvasWidth / 2, fontSize / 2);
+
+            scale = canvasWidth / fontSize;
+
+            this.texture.needsUpdate = true;
+            this.mesh.scale.set(scale, 1, 1)
+            // .multiplyScalar(0.0125);
+
+            return this;
+        }
+
+        get position() {
+            return this.mesh.position;
+        }
+    }
+</script>
+
+<script>
+    let scene, camera, renderer, stats, gui;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    let clock = new THREE.Clock();
+
+    // gui
+    gui = new dat.GUI();
+
+    // renderer
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.gammaOutput = true;
+    renderer.gammaFactor = 2.2;
+    // renderer.setClearColor(new THREE.Color(0xe0e0e0));
+    document.body.appendChild(renderer.domElement);
+
+    // camera
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 10000);
+    camera.position.set(100, 100, 200);
+    camera.lookAt(0, 0, 0);
+
+    // scene
+    scene = new THREE.Scene();
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    generateText();
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    function generateText() {
+        console.time('perf');
+        for (let i = 0; i < 2000; i++) {
+            let sprite = new SpriteText('hello world!');
+            sprite.position.set(
+                Math.random() * 100 - 50,
+                Math.random() * 100 - 50,
+                Math.random() * 100 - 50
+            );
+
+            scene.add(sprite.mesh);
+        }
+        console.timeEnd('perf');
+    }
+
+
+</script>
+</html>

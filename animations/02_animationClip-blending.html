@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/libs/dat.gui.min.js"></script>
+    <script src="../libs/examples/js/libs/tween.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+    <script src="../libs/examples/js/loaders/GLTFLoader.js"></script>
+</head>
+<body></body>
+
+<script>
+    let scene, camera, renderer, stats, gui;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let mixer, actions = [];
+    let idleAction, walkAction, runAction;
+
+    let clock = new THREE.Clock();
+
+    // gui
+    gui = new dat.GUI();
+
+    // renderer
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.gammaOutput = true;
+    renderer.gammaFactor = 2.2;
+    renderer.clearColor(0x000000);
+    renderer.shadowMap.enabled = true;
+    document.body.appendChild(renderer.domElement);
+
+    // camera
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 100);
+    camera.position.set(3, 2, -5);
+    camera.lookAt(new THREE.Vector3(0, 2, 0));
+
+    // scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xe0e0e0);
+    scene.fog = new THREE.Fog(0xe0e0e0, 20, 100);
+
+    let light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    light.position.set(0, 20, 0);
+    scene.add(light);
+
+    light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 20, -10);
+    light.castShadow = true;
+    scene.add(light);
+
+    let mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(2000, 2000), new THREE.MeshPhongMaterial({
+        color: 0x999999,
+        depthWrite: false
+    }));
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.receiveShadow = true;
+    scene.add(mesh);
+
+    let grid = new THREE.GridHelper(200, 40, 0x000000, 0x000000);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    scene.add(grid);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    loadModel();
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+        stats.update();
+    }
+
+    function render() {
+        if (mixer) mixer.update(clock.getDelta());
+
+        renderer.render(scene, camera);
+    }
+
+    function loadModel() {
+        let loader = new THREE.GLTFLoader();
+        loader.load("../libs/examples/models/gltf/Soldier.glb", (gltf) => {
+            let model = gltf.scene;
+            let clips = gltf.animations;
+
+            scene.add(model);
+
+            model.traverse(function (object) {
+                if (object.isMesh) object.castShadow = true;
+            });
+
+            mixer = new THREE.AnimationMixer(model);
+
+            idleAction = mixer.clipAction(clips[0]);
+            walkAction = mixer.clipAction(clips[3]);
+            runAction = mixer.clipAction(clips[1]);
+
+            actions = [walkAction, idleAction, runAction];
+
+            actions.forEach((action, index) => {
+                if (index !== 0)action.setEffectiveWeight(0);
+                action.play();
+            });
+
+            let count = 0;
+
+            changeAction(actions[count], actions[count + 1], 0.5);
+
+            function changeAction(startAction, endAction, duration) {
+                count++;
+                prepareCrossFade(startAction, endAction, duration);
+                setTimeout(() => {
+
+                    changeAction(actions[count % actions.length], actions[(count + 1) % actions.length], 1);
+                }, 2000);
+            }
+        });
+    }
+
+    function setWeight(action, weight) {
+        action.enabled = true;
+        action.setEffectiveTimeScale(1);
+        action.setEffectiveWeight(weight);
+    }
+
+    function prepareCrossFade(startAction, endAction, duration) {
+        unPauseAllActions();
+
+        // If the current action is 'idle' (duration 4 sec), execute the crossfade immediately;
+        // else wait until the current action has finished its current loop
+
+        if (startAction === idleAction) {
+            executeCrossFade(startAction, endAction, duration);
+        } else {
+            synchronizeCrossFade(startAction, endAction, duration);
+        }
+    }
+
+    function unPauseAllActions() {
+        actions.forEach(function (action) {
+            action.paused = false;
+        });
+    }
+
+    function executeCrossFade(startAction, endAction, duration) {
+        setWeight(endAction, 1);
+        endAction.time = 0;
+
+        startAction.crossFadeTo(endAction, duration, true);
+    }
+
+    function synchronizeCrossFade(startAction, endAction, duration) {
+        mixer.addEventListener('loop', onLoopFinished);
+
+        function onLoopFinished(event) {
+            if (event.action === startAction) {
+                mixer.removeEventListener('loop', onLoopFinished);
+                executeCrossFade(startAction, endAction, duration);
+            }
+        }
+    }
+
+</script>
+</html>

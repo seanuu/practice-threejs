@@ -23,6 +23,9 @@
 <script>
     let width = window.innerWidth, height = window.innerHeight;
     let renderer, scene, camera, stats, controls, light;
+    let mixer;
+
+    let clock = new THREE.Clock();
     let path = '../libs/examples';
 
     // renderer
@@ -30,6 +33,8 @@
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.clearColor(0x000000);
+    renderer.gammaFactor = 2.2;
+    renderer.gammaOutput = true;
     document.body.appendChild(renderer.domElement);
 
     // scene
@@ -37,7 +42,7 @@
 
     // camera
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.set(0, 0, 8);
+    camera.position.set(0, 5, 15);
 
     // light
     light = new THREE.HemisphereLight(0xbbbbff, 0x444422);
@@ -58,6 +63,7 @@
     animate();
 
     function render() {
+        if (mixer) mixer.update(clock.getDelta());
         renderer.render(scene, camera);
     }
 
@@ -83,12 +89,16 @@
     function loadModel(envMap) {
         let loader = new THREE.GLTFLoader();
 
-        loader.load(`../libs/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf`, function (gltf) {
+        loader.load(`../libs/examples/models/gltf/RobotExpressive/RobotExpressive.glb`, function (gltf) {
             gltf.scene.traverse(function (child) {
                 if (child.isMesh) {
                     child.material.envMap = envMap;
                 }
             });
+
+            mixer = new THREE.AnimationMixer(gltf.scene);
+            mixer.clipAction(gltf.animations[0]).play();
+
             scene.add(gltf.scene);
         });
     }

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../libs/three.js"></script>
+    <script src="../libs/examples/js/libs/stats.min.js"></script>
+    <script src="../libs/examples/js/libs/dat.gui.min.js"></script>
+    <script src="../libs/examples/js/libs/tween.min.js"></script>
+    <script src="../libs/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body></body>
+
+<script>
+    let scene, camera, renderer, stats, gui;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+
+    let clock = new THREE.Clock();
+
+    // gui
+    gui = new dat.GUI();
+
+    // renderer
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.gammaOutput = true;
+    renderer.gammaFactor = 2.2;
+    renderer.clearColor(0x000000);
+    renderer.shadowMap.enabled = true;
+    document.body.appendChild(renderer.domElement);
+
+    // camera
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 10000);
+    camera.position.set(-50, -120, 200);
+
+    // scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xe0e0e0);
+    // scene.fog = new THREE.Fog(0xe0e0e0, 20, 100);
+
+    let light = new THREE.HemisphereLight(0xffffff, 0x444444);
+    light.position.set(0, 20, 0);
+    scene.add(light);
+
+    light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 20, -10);
+    light.castShadow = true;
+    scene.add(light);
+
+    // controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.screenSpacePanning = true;
+
+    // stats
+    stats = new Stats();
+    document.body.appendChild(stats.domElement);
+
+    loadFont();
+    animate();
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+    }
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+
+    function loadFont() {
+        let loader = new THREE.FontLoader();
+        loader.load('../libs/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+            console.time('perf');
+            for (let i = 0; i < 1000; i++) {
+                generateText(font);
+            }
+            console.timeEnd('perf');
+        });
+    }
+
+    function generateText(font) {
+        let xMid, text;
+        let color = new THREE.Color(0x006699);
+
+        let material = new THREE.MeshBasicMaterial({
+            color: color,
+            transparent: true,
+            opacity: 0.4,
+            side: THREE.DoubleSide
+        });
+
+        let shapes = font.generateShapes('hello world!', 2);
+        let geometry = new THREE.ShapeBufferGeometry(shapes);
+
+        geometry.computeBoundingBox();
+
+        xMid = -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+
+        geometry.translate(xMid, 0, 0);
+
+        text = new THREE.Mesh(geometry, material);
+
+        text.position.set(Math.random() * 200 - 100, Math.random() * 200 - 100, Math.random() * 200 - 100);
+
+        scene.add(text);
+    }
+</script>
+</html>

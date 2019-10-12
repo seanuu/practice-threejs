@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2496e3df-dcb0-481a-99c6-5bf22ecb1cb9" name="Default Changelist" comment="" />
+    <list default="true" id="2496e3df-dcb0-481a-99c6-5bf22ecb1cb9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/animations/02_animationClip-blending.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/others/03-text-shape.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/others/04-sprite-text.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/animations/02_blending.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chapter-08/02-loader-gltf.html" beforeDir="false" afterPath="$PROJECT_DIR$/chapter-08/02-loader-gltf.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chapter-09/01-morphtargets_horse.html" beforeDir="false" afterPath="$PROJECT_DIR$/chapter-09/01-morphtargets_horse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chapter-10/01-lava-texture.html" beforeDir="false" afterPath="$PROJECT_DIR$/chapter-10/01-lava-texture.html" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,8 +22,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -33,16 +44,16 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\reference\practice-threejs\animations" />
-      <recent name="G:\learning-threejs\libs" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\reference\practice-threejs\libs\examples\models\gltf" />
       <recent name="F:\learning-threejs\others" />
       <recent name="G:\learning-threejs\assets" />
       <recent name="G:\learning-threejs\chapter-06" />
       <recent name="G:\learning-threejs" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\reference\practice-threejs\animations" />
+      <recent name="G:\learning-threejs\libs" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -92,7 +103,7 @@
       <workItem from="1568619893634" duration="1360000" />
       <workItem from="1570605301070" duration="11760000" />
       <workItem from="1570707371940" duration="5474000" />
-      <workItem from="1570799446090" duration="285000" />
+      <workItem from="1570799446090" duration="31231000" />
     </task>
     <servers />
   </component>
